@@ -23,8 +23,8 @@ Fiz algumas alterações no projeto e acredito que seja relevante destacar os mo
 1. **Clone o repositório**:
 
    ```sh
-   git clone https://github.com/seu-usuario/api-negociacoes.git
-   cd api-negociacoes
+   git clone https://github.com/felipefunk/testApi.git
+   cd testApi
    ```
 
 2. **Instalar as dependências do projeto**:
