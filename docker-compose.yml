@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  database:
+    image: postgres:15
+    container_name: postgres_nest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: hubify
+
+  app:
+    build: .
+    container_name: nest_app
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - '3000:3000'
+    environment:
+      DATABASE_URL: postgresql://root:root@database:5432/hubify
+    command: >
+      sh -c "npx prisma migrate deploy && npm run start:dev"

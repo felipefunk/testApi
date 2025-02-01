@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id           Int           @id @default(autoincrement())
+  name         String        @map("name")
+  email        String
+  phone        String
+  negotiations Negotiation[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@map("leads")
+}
+
+model Negotiation {
+  id        Int                              @id @default(autoincrement())
+  title     String
+  status    NegotiationStatusAndFunnelStatus @default(UNDER_NEGOTIATION)
+  leadId    Int
+  lead      Lead                             @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  funnelId  Int
+  funnel    Funnel                           @relation(fields: [funnelId], references: [id], onDelete: Restrict)
+  createdAt DateTime                         @default(now())
+  updatedAt DateTime                         @updatedAt
+
+  @@map("negotiations")
+}
+
+model Funnel {
+  id           Int                              @id @default(autoincrement())
+  name         NegotiationStatusAndFunnelStatus @unique
+  negotiations Negotiation[]
+  createdAt    DateTime                         @default(now())
+
+  @@map("funnels")
+}
+
+enum NegotiationStatusAndFunnelStatus {
+  UNDER_NEGOTIATION
+  LOST
+  WIN
+}
